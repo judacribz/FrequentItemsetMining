@@ -10,10 +10,19 @@
 using namespace std;
 
 #define FILE "retail.dat"
+#define PAIRS_DIM 2
+#define TRIPLES_DIM 3
 
-long factorial(long n)
+long getItemsetSize(long n, int dim)
 {
-  return (n <= 1) ? 1 : factorial(n - 1) * n;
+  int size = 1, div = 1;
+  for (int i = n; i > (n - dim); --i)
+  {
+    size *= i;
+    div *= i - (n - dim);
+  }
+
+  return size / div;
 }
 
 int main()
@@ -25,7 +34,7 @@ int main()
   bool oneItemExists, twoItemsExist, threeItemsExist;
 
   string line;
-  int supThresh = 1000;
+  int supThresh = 200;
   // Read in file and get item frequency
   ifstream ifs;
   ifs.open(FILE, ifstream::in);
@@ -56,7 +65,7 @@ int main()
 
   int size = freqItems.size();
   cout << size << endl;
-  long numItemsets = factorial(size) / (factorial(2) * factorial(size - 2));
+  long numItemsets = getItemsetSize(size, PAIRS_DIM);
   cout << numItemsets << endl;
 
   // Create pairs from frequent items
@@ -125,7 +134,7 @@ int main()
     }
   }
 
-  numItemsets = factorial(size) / (factorial(size - 3) * factorial(3));
+  numItemsets = getItemsetSize(size, TRIPLES_DIM);
 
   int freqTrips[numItemsets][4];
   l = 0;
@@ -151,8 +160,7 @@ int main()
     {
       // Split items in string line and store in vector
       istringstream iss(line);
-      basketItems.assign(istream_iterator<int>{iss},
-                         istream_iterator<int>());
+      basketItems.assign(istream_iterator<int>{iss}, istream_iterator<int>());
 
       for (int i = 0; i < numItemsets; i++)
       {
@@ -162,13 +170,18 @@ int main()
 
         for (itemIt = basketItems.begin(); itemIt != basketItems.end(); itemIt++)
         {
-          if (*itemIt == freqTrips[i][1]) {
+          if (*itemIt == freqTrips[i][1])
+          {
             oneItemExists = true;
-          } else if (*itemIt == freqTrips[i][2]) {
+          }
+          else if (*itemIt == freqTrips[i][2])
+          {
             twoItemsExist = true;
-          } else if (*itemIt == freqTrips[i][3]) {
+          }
+          else if (*itemIt == freqTrips[i][3])
+          {
             threeItemsExist = true;
-          } 
+          }
 
           if (oneItemExists && twoItemsExist && threeItemsExist)
           {
