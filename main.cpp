@@ -12,7 +12,13 @@ using namespace std;
 #define FILE "retail.dat"
 #define PAIRS_DIM 2
 #define TRIPLES_DIM 3
+#define SUPP_THRESH 1000
 
+map<int, int> itemCount;
+vector<int>::iterator itemIt;
+vector<int>::iterator i, j, k;
+vector<int> basketItems, freqItems;
+bool oneItemExists, twoItemsExist, threeItemsExist;
 long getItemsetSize(long n, int dim)
 {
   int size = 1, div = 1;
@@ -25,16 +31,9 @@ long getItemsetSize(long n, int dim)
   return size / div;
 }
 
-int main()
+void passThroughData()
 {
-  map<int, int> itemCount;
-  vector<int>::iterator itemIt;
-  vector<int>::iterator i, j, k;
-  vector<int> basketItems, freqItems;
-  bool oneItemExists, twoItemsExist, threeItemsExist;
-
   string line;
-  int supThresh = 200;
   // Read in file and get item frequency
   ifstream ifs;
   ifs.open(FILE, ifstream::in);
@@ -51,7 +50,7 @@ int main()
       {
         (itemCount.count(*itemIt) > 0) ? itemCount[*itemIt]++ : itemCount[*itemIt] = 1;
 
-        if (itemCount[*itemIt] == supThresh)
+        if (itemCount[*itemIt] == SUPP_THRESH)
         {
           freqItems.push_back(*itemIt);
         }
@@ -62,6 +61,12 @@ int main()
   }
   else
     cout << "Unable to open file";
+}
+
+int main()
+{
+
+  passThroughData();
 
   int size = freqItems.size();
   cout << size << endl;
@@ -81,13 +86,14 @@ int main()
       l++;
     }
   }
-
+  ifstream ifss;
   // Read in file and get pair frequency
-  ifs.open(FILE, ifstream::in);
-  if (ifs.good())
+  string line;
+  ifss.open(FILE, ifstream::in);
+  if (ifss.good())
   {
 
-    while (getline(ifs, line))
+    while (getline(ifss, line))
     {
       // Split items in string line and store in vector
       istringstream iss(line);
@@ -119,7 +125,7 @@ int main()
       }
     }
 
-    ifs.close();
+    ifss.close();
   }
   else
     cout << "Unable to open file";
@@ -128,7 +134,7 @@ int main()
   cout << "Count: " << freqItems.size() << endl;
   for (int i = 0; i < numItemsets; i++)
   {
-    if (freqPairs[i][0] > supThresh)
+    if (freqPairs[i][0] > SUPP_THRESH)
     {
       cout << "Count(" << freqPairs[i][1] << ", " << freqPairs[i][2] << ")=" << freqPairs[i][0] << endl;
     }
@@ -153,10 +159,10 @@ int main()
   }
 
   // Read in file and get pair frequency
-  ifs.open(FILE, ifstream::in);
-  if (ifs.good())
+  ifss.open(FILE, ifstream::in);
+  if (ifss.good())
   {
-    while (getline(ifs, line))
+    while (getline(ifss, line))
     {
       // Split items in string line and store in vector
       istringstream iss(line);
@@ -191,14 +197,14 @@ int main()
         }
       }
     }
-    ifs.close();
+    ifss.close();
   }
   else
     cout << "Unable to open file";
 
   for (int i = 0; i < numItemsets; i++)
   {
-    if (freqTrips[i][0] > supThresh)
+    if (freqTrips[i][0] > SUPP_THRESH)
     {
       cout << "Count(" << freqTrips[i][1] << ", " << freqTrips[i][2] << ", " << freqTrips[i][3] << ")=" << freqTrips[i][0] << endl;
     }
