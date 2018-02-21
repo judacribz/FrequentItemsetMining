@@ -12,8 +12,7 @@ using namespace std;
 #define FILE "retail.dat"
 #define PAIRS_DIM 2
 #define TRIPLES_DIM 3
-#define SUPP_THRESH 1000
-
+#define SUPP_THRESH 300
 #define RC_FREQ_ITEMS 1
 #define RC_FREQ_PAIRS 2
 #define RC_FREQ_TRIPS 3
@@ -40,9 +39,8 @@ long getItemsetSize(long n, int dim)
 
 void passThroughData(int dim)
 {
-
   int l = 0;
-  int freqArr[numItemsets][dim];
+  int freqArr[numItemsets][dim + 1];
 
   if (dim > 0)
   {
@@ -97,7 +95,7 @@ void passThroughData(int dim)
         int count = 0;
         for (int i = 0; i < numItemsets; i++)
         {
-
+          count = 0;
           for (vector<int>::iterator itemIt = basketItems.begin(); itemIt != basketItems.end(); itemIt++)
           {
             for (int j = 1; j <= dim; j++)
@@ -109,10 +107,9 @@ void passThroughData(int dim)
               }
             }
 
-            if (count == 2)
+            if (count == dim)
             {
               freqArr[i][0]++;
-              count = 0;
               break;
             }
           }
@@ -136,6 +133,34 @@ void passThroughData(int dim)
   }
   else
     cout << "Unable to open file";
+
+  if (dim == 3)
+  {
+    for (int i = 0; i < numItemsets; i++)
+    {
+      if (freqArr[i][0] >= SUPP_THRESH)
+      {
+        cout << "Count(" << freqArr[i][1] << ", " << freqArr[i][2] << ", " << freqArr[i][3] << ")=" << freqArr[i][0] << endl;
+      }
+    }
+  }
+  else if (dim == 2)
+  {
+    for (int i = 0; i < numItemsets; i++)
+    {
+      if (freqArr[i][0] >= SUPP_THRESH)
+      {
+        cout << "Count(" << freqArr[i][1] << ", " << freqArr[i][2] << ")=" << freqArr[i][0] << endl;
+      }
+    }
+  }
+  else
+  {
+    for (vector<int>::iterator itemIt = freqItems.begin(); itemIt != freqItems.end(); itemIt++)
+    {
+      // cout << *itemIt << endl;
+    }
+  }
 }
 
 int main()
@@ -144,20 +169,9 @@ int main()
   passThroughData(0);
 
   int size = freqItems.size();
-  cout << size << endl;
-
   numItemsets = getItemsetSize(size, PAIRS_DIM);
-  cout << numItemsets << endl;
 
   passThroughData(PAIRS_DIM);
-
-  // for (int i = 0; i < numItemsets; i++)
-  // {
-  //   if (freqPairs[i][0] > SUPP_THRESH)
-  //   {
-  //     cout << "Count(" << freqPairs[i][1] << ", " << freqPairs[i][2] << ")=" << freqPairs[i][0] << endl;
-  //   }
-  // }
 
   numItemsets = getItemsetSize(size, TRIPLES_DIM);
 
