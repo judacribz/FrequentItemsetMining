@@ -14,11 +14,18 @@ using namespace std;
 #define TRIPLES_DIM 3
 #define SUPP_THRESH 1000
 
+#define RC_FREQ_ITEMS 1
+#define RC_FREQ_PAIRS 2
+#define RC_FREQ_TRIPS 3
+
 map<int, int> itemCount;
-vector<int>::iterator itemIt;
 vector<int>::iterator i, j, k;
 vector<int> basketItems, freqItems;
+
 bool oneItemExists, twoItemsExist, threeItemsExist;
+
+long numItemsets = 0;
+
 long getItemsetSize(long n, int dim)
 {
   int size = 1, div = 1;
@@ -31,12 +38,50 @@ long getItemsetSize(long n, int dim)
   return size / div;
 }
 
-void passThroughData()
+void passThroughData(int dim)
 {
+
+  int l = 0;
+  int freqArr[numItemsets][dim];
+
+  if (dim > 0)
+  {
+    // Populate 2d array
+    for (i = freqItems.begin(); i != freqItems.end(); i++)
+    {
+      for (j = i + 1; j != freqItems.end(); j++)
+      {
+        switch (dim)
+        {
+        case PAIRS_DIM:
+          freqArr[l][0] = 0;
+          freqArr[l][1] = *i;
+          freqArr[l][2] = *j;
+
+          break;
+
+        case TRIPLES_DIM:
+
+          for (k = j + 1; k != freqItems.end(); k++)
+          {
+            freqArr[l][0] = 0;
+            freqArr[l][1] = *i;
+            freqArr[l][2] = *j;
+            freqArr[l][3] = *k;
+          }
+
+          break;
+        }
+        l++;
+      }
+    }
+  }
+
   string line;
   // Read in file and get item frequency
   ifstream ifs;
   ifs.open(FILE, ifstream::in);
+
   if (ifs.good())
   {
     while (getline(ifs, line))
@@ -46,17 +91,47 @@ void passThroughData()
       basketItems.assign(istream_iterator<int>{iss},
                          istream_iterator<int>());
 
-      for (itemIt = basketItems.begin(); itemIt != basketItems.end(); itemIt++)
+      if (dim > 0)
       {
-        (itemCount.count(*itemIt) > 0) ? itemCount[*itemIt]++ : itemCount[*itemIt] = 1;
-
-        if (itemCount[*itemIt] == SUPP_THRESH)
+        // Check if pair or triple exists in each basket, add to pair count in array
+        int count = 0;
+        for (int i = 0; i < numItemsets; i++)
         {
-          freqItems.push_back(*itemIt);
+
+          for (vector<int>::iterator itemIt = basketItems.begin(); itemIt != basketItems.end(); itemIt++)
+          {
+            for (int j = 1; j <= dim; j++)
+            {
+              if (*itemIt == freqArr[i][j])
+              {
+                count++;
+                break;
+              }
+            }
+
+            if (count == 2)
+            {
+              freqArr[i][0]++;
+              count = 0;
+              break;
+            }
+          }
+        }
+      }
+      else
+      {
+        for (vector<int>::iterator itemIt = basketItems.begin(); itemIt != basketItems.end(); itemIt++)
+        {
+
+          (itemCount.count(*itemIt) > 0) ? itemCount[*itemIt]++ : itemCount[*itemIt] = 1;
+
+          if (itemCount[*itemIt] == SUPP_THRESH)
+          {
+            freqItems.push_back(*itemIt);
+          }
         }
       }
     }
-
     ifs.close();
   }
   else
@@ -66,148 +141,34 @@ void passThroughData()
 int main()
 {
 
-  passThroughData();
+  passThroughData(0);
 
   int size = freqItems.size();
   cout << size << endl;
-  long numItemsets = getItemsetSize(size, PAIRS_DIM);
+
+  numItemsets = getItemsetSize(size, PAIRS_DIM);
   cout << numItemsets << endl;
 
-  // Create pairs from frequent items
-  int freqPairs[numItemsets][3];
-  int l = 0;
-  for (int i = 0; i < size; i++)
-  {
-    for (int j = (i + 1); j < size; j++)
-    {
-      freqPairs[l][0] = 0;
-      freqPairs[l][1] = freqItems[i];
-      freqPairs[l][2] = freqItems[j];
-      l++;
-    }
-  }
-  ifstream ifss;
-  // Read in file and get pair frequency
-  string line;
-  ifss.open(FILE, ifstream::in);
-  if (ifss.good())
-  {
+  passThroughData(PAIRS_DIM);
 
-    while (getline(ifss, line))
-    {
-      // Split items in string line and store in vector
-      istringstream iss(line);
-      basketItems.assign(istream_iterator<int>{iss},
-                         istream_iterator<int>());
-
-      for (int i = 0; i < numItemsets; i++)
-      {
-        oneItemExists = false;
-        twoItemsExist = false;
-
-        for (itemIt = basketItems.begin(); itemIt != basketItems.end(); itemIt++)
-        {
-          if (*itemIt == freqPairs[i][1])
-          {
-            oneItemExists = true;
-          }
-          else if (*itemIt == freqPairs[i][2])
-          {
-            twoItemsExist = true;
-          }
-
-          if (oneItemExists && twoItemsExist)
-          {
-            freqPairs[i][0]++;
-            break;
-          }
-        }
-      }
-    }
-
-    ifss.close();
-  }
-  else
-    cout << "Unable to open file";
-
-  cout << "Count: " << itemCount.size() << endl;
-  cout << "Count: " << freqItems.size() << endl;
-  for (int i = 0; i < numItemsets; i++)
-  {
-    if (freqPairs[i][0] > SUPP_THRESH)
-    {
-      cout << "Count(" << freqPairs[i][1] << ", " << freqPairs[i][2] << ")=" << freqPairs[i][0] << endl;
-    }
-  }
+  // for (int i = 0; i < numItemsets; i++)
+  // {
+  //   if (freqPairs[i][0] > SUPP_THRESH)
+  //   {
+  //     cout << "Count(" << freqPairs[i][1] << ", " << freqPairs[i][2] << ")=" << freqPairs[i][0] << endl;
+  //   }
+  // }
 
   numItemsets = getItemsetSize(size, TRIPLES_DIM);
 
-  int freqTrips[numItemsets][4];
-  l = 0;
-  for (i = freqItems.begin(); i != freqItems.end(); i++)
-  {
-    for (j = i + 1; j != freqItems.end(); j++)
-    {
-      for (k = j + 1; k != freqItems.end(); k++)
-      {
-        freqTrips[l][0] = 0;
-        freqTrips[l][1] = *i;
-        freqTrips[l][2] = *j;
-        freqTrips[l++][3] = *k;
-      }
-    }
-  }
+  passThroughData(TRIPLES_DIM);
 
-  // Read in file and get pair frequency
-  ifss.open(FILE, ifstream::in);
-  if (ifss.good())
-  {
-    while (getline(ifss, line))
-    {
-      // Split items in string line and store in vector
-      istringstream iss(line);
-      basketItems.assign(istream_iterator<int>{iss}, istream_iterator<int>());
-
-      for (int i = 0; i < numItemsets; i++)
-      {
-        oneItemExists = false;
-        twoItemsExist = false;
-        threeItemsExist = false;
-
-        for (itemIt = basketItems.begin(); itemIt != basketItems.end(); itemIt++)
-        {
-          if (*itemIt == freqTrips[i][1])
-          {
-            oneItemExists = true;
-          }
-          else if (*itemIt == freqTrips[i][2])
-          {
-            twoItemsExist = true;
-          }
-          else if (*itemIt == freqTrips[i][3])
-          {
-            threeItemsExist = true;
-          }
-
-          if (oneItemExists && twoItemsExist && threeItemsExist)
-          {
-            freqTrips[i][0]++;
-            break;
-          }
-        }
-      }
-    }
-    ifss.close();
-  }
-  else
-    cout << "Unable to open file";
-
-  for (int i = 0; i < numItemsets; i++)
-  {
-    if (freqTrips[i][0] > SUPP_THRESH)
-    {
-      cout << "Count(" << freqTrips[i][1] << ", " << freqTrips[i][2] << ", " << freqTrips[i][3] << ")=" << freqTrips[i][0] << endl;
-    }
-  }
+  // for (int i = 0; i < numItemsets; i++)
+  // {
+  //   if (freqTrips[i][0] > SUPP_THRESH)
+  //   {
+  //     cout << "Count(" << freqTrips[i][1] << ", " << freqTrips[i][2] << ", " << freqTrips[i][3] << ")=" << freqTrips[i][0] << endl;
+  //   }
+  // }
   return 0;
 }
