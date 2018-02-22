@@ -1,5 +1,15 @@
-
+#include <cstdlib>
 #include "util.h"
+
+#ifdef _WIN32
+#define CLEAR "cls"
+#else
+#define CLEAR "clear"
+#endif
+
+map<int, int> itemCount;
+vector<int>::iterator i, j, k;
+vector<int> freqItems;
 
 long getItemsetSize(long n, int dim)
 {
@@ -12,4 +22,9 @@ long getItemsetSize(long n, int dim)
 
     // cout << (size / div) << endl;
     return size / div;
+}
+
+void clearScreen()
+{
+    system(CLEAR);
 }

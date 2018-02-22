@@ -1,5 +1,4 @@
 #pragma once
 
-void a_priori();
-
-int passThroughData(int dim, int numItemsets);
+extern void pcy();
+extern int passThroughPcy(int dim, int numItemsets);
