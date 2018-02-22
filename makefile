@@ -3,11 +3,14 @@ CC = g++
 CFLAGS = -g -std=c++11 -Wall
 
 TARGET = main
+SOURCES = *.cpp
+.PHONY: clean help
 
-run: $(TARGET).exe; ./$(TARGET).exe
+run: $(OBJECTS)
+	./$(TARGET).exe
 
-$(TARGET).exe: $(TARGET).cpp
-	$(CC) $(CFLAGS) -o $(TARGET).exe $(TARGET).cpp
+$(TARGET).exe: $(SOURCES)
+	$(CC) $(CFLAGS) -o $(TARGET).exe $(SOURCES)
 
 clean:
-	$(RM) $(TARGET)
+	$(RM) $(TARGET).exe

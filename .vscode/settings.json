@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "array": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp",
+        "ostream": "cpp",
+        "vector": "cpp",
+        "string": "cpp",
+        "cstdlib": "cpp",
+        "iostream": "cpp",
+        "iterator": "cpp",
+        "fstream": "cpp",
+        "ctime": "cpp"
+    }
+}
