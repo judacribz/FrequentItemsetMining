@@ -8,13 +8,6 @@
 #include "../headers/a_priori.h"
 #include "../headers/util.h"
 
-using namespace std;
-
-#define SUPP_THRESH 1000
-#define FILE "retail.dat"
-#define DIM_PAIRS 3
-#define DIM_TRIPS 4
-
 int passThroughPriori(int dim, int numItemsets);
 
 void aPriori()
@@ -36,33 +29,28 @@ int passThroughPriori(int dim, int numItemsets)
 {
     int freqCount = 0;
 
-    // Populate 2D array
-    int freqArr[numItemsets][dim];
+    // Populate 2D arrays with pairs
     if (dim > 0)
     {
+        freqArr.resize(numItemsets);
+        for (int i = 0; i < numItemsets; ++i)
+            freqArr[i].resize(dim);
+
         int l = 0;
 
-        switch (dim)
+        for (i = freqItems.begin(); i != freqItems.end(); i++)
         {
-        case DIM_PAIRS:
-            for (i = freqItems.begin(); i != freqItems.end(); i++)
+            for (j = i + 1; j != freqItems.end(); j++)
             {
-
-                for (j = i + 1; j != freqItems.end(); j++)
+                switch (dim)
                 {
+                case DIM_PAIRS:
                     freqArr[l][0] = 0;
                     freqArr[l][1] = *i;
                     freqArr[l++][2] = *j;
-                }
-            }
+                    break;
 
-            break;
-
-        case DIM_TRIPS:
-            for (i = freqItems.begin(); i != freqItems.end(); i++)
-            {
-                for (j = i + 1; j != freqItems.end(); j++)
-                {
+                case DIM_TRIPS:
                     for (k = j + 1; k != freqItems.end(); k++)
                     {
                         freqArr[l][0] = 0;
@@ -70,10 +58,9 @@ int passThroughPriori(int dim, int numItemsets)
                         freqArr[l][2] = *j;
                         freqArr[l++][3] = *k;
                     }
+                    break;
                 }
             }
-
-            break;
         }
     }
 
@@ -179,21 +166,7 @@ int passThroughPriori(int dim, int numItemsets)
 
     if (dim > 0)
     {
-        for (int i = 0; i < numItemsets; i++)
-        {
-            if (freqArr[i][0] >= SUPP_THRESH)
-            {
-                freqCount++;
-                cout << "Count(";
-                for (int j = 1; j < dim; j++)
-                {
-                    cout << freqArr[i][j];
-
-                    cout << ((j < dim - 1) ? ", " : ")=");
-                }
-                cout << freqArr[i][0] << endl;
-            }
-        }
+        printItemsets(freqArr, dim, SUPP_THRESH, numItemsets);
     }
 
     return freqCount;

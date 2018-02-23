@@ -10,17 +10,9 @@
 
 using namespace std;
 
-#define SUPP_THRESH 100
-#define FILE "retail.dat"
-#define DIM_PAIRS 3
-#define DIM_TRIPS 4
-
 int passThroughPcy(int dim, int numItemsets);
 
-int pcy_hash(int item1, int item2, int num = 3)
-{
-    return (item1 ^ item2) % num;
-}
+int pcy_hash(int item1, int item2, int num);
 
 void pcy()
 {
@@ -140,28 +132,10 @@ int passThroughPcy(int dim, int numItemsets)
     else
         cout << "Unable to open file";
 
-    if (dim == DIM_TRIPS)
-    {
-        for (int i = 0; i < numItemsets; i++)
-        {
-            if (freqArr[i][0] >= SUPP_THRESH)
-            {
-                // cout << "Count(" << freqArr[i][1] << ", " << freqArr[i][2] << ", " << freqArr[i][3] << ")=" << freqArr[i][0] << endl;
-                freqCount++;
-            }
-        }
-    }
-    else if (dim == DIM_PAIRS)
-    {
-        for (int i = 0; i < numItemsets; i++)
-        {
-            if (freqArr[i][0] >= SUPP_THRESH)
-            {
-                freqCount++;
-                // cout << "Count(" << freqArr[i][1] << ", " << freqArr[i][2] << ")=" << freqArr[i][0] << endl;
-            }
-        }
-    }
-
     return freqCount;
+}
+
+int pcy_hash(int item1, int item2, int num)
+{
+    return (item1 ^ item2) % num;
 }
