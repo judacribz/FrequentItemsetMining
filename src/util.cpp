@@ -1,14 +1,6 @@
-#include <cstdlib>
-#include <iostream>
 #include "../headers/util.h"
 
 using namespace std;
-
-#ifdef _WIN32
-#define CLEAR "cls"
-#else
-#define CLEAR "clear"
-#endif
 
 map<int, int> itemCount;
 vector<int>::iterator i, j, k;
@@ -34,7 +26,7 @@ void clearScreen()
     system(CLEAR);
 }
 
-int printItemsets(vector<vector<int>> freqArr, int dim, int thresh, int numItemsets)
+int printItemsets(vector<vector<int>> &freqArr, int dim, int thresh, int numItemsets)
 {
     int count = 0;
     for (int i = 0; i < numItemsets; i++)
@@ -56,10 +48,9 @@ int printItemsets(vector<vector<int>> freqArr, int dim, int thresh, int numItems
     return count;
 }
 
-vector<vector<int>> populateTuples(int numItemsets, int dim)
+void populateTuples(vector<vector<int>> &freqArr, int numItemsets, int dim)
 {
     int l = 0;
-    vector<vector<int>> freqArr;
 
     freqArr.resize(numItemsets);
     for (int i = 0; i < numItemsets; ++i)
@@ -89,6 +80,4 @@ vector<vector<int>> populateTuples(int numItemsets, int dim)
             }
         }
     }
-
-    return freqArr;
 }

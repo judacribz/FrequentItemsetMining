@@ -1,10 +1,3 @@
-#include <fstream>
-#include <iostream>
-#include <iterator>
-#include <map>
-#include <sstream>
-#include <string>
-#include <vector>
 #include "../headers/pcy.h"
 #include "../headers/util.h"
 
@@ -26,53 +19,11 @@ void pcy()
 int passThroughPcy(int dim, int numItemsets)
 {
     int freqCount = 0;
-
-    // Populate 2D array
-    int freqArr[numItemsets][dim];
-    if (dim > 0)
-    {
-        int l = 0;
-
-        switch (dim)
-        {
-        case DIM_PAIRS:
-            for (i = freqItems.begin(); i != freqItems.end(); i++)
-            {
-
-                for (j = i + 1; j != freqItems.end(); j++)
-                {
-                    freqArr[l][0] = 0;
-                    freqArr[l][1] = *i;
-                    freqArr[l++][2] = *j;
-                }
-            }
-
-            break;
-
-        case DIM_TRIPS:
-            for (i = freqItems.begin(); i != freqItems.end(); i++)
-            {
-                for (j = i + 1; j != freqItems.end(); j++)
-                {
-                    for (k = j + 1; k != freqItems.end(); k++)
-                    {
-                        freqArr[l][0] = 0;
-                        freqArr[l][1] = *i;
-                        freqArr[l][2] = *j;
-                        freqArr[l++][3] = *k;
-                    }
-                }
-            }
-
-            break;
-        }
-    }
-
     // Read in file and get item frequency
     ifstream ifs(FILE, ifstream::in);
+
     if (ifs.good())
     {
-        vector<int> basketItems;
         string line;
         while (getline(ifs, line))
         {
@@ -102,6 +53,8 @@ int passThroughPcy(int dim, int numItemsets)
                 // Check if pair or triple exists in each basket, add to pair count in array
             default:
                 int count = 0;
+
+                // Get and store pair count
                 for (int i = 0; i < numItemsets; i++)
                 {
                     count = 0;
@@ -131,6 +84,9 @@ int passThroughPcy(int dim, int numItemsets)
     }
     else
         cout << "Unable to open file";
+
+    if (dim != 0)
+        printItemsets(freqArr, dim, SUPP_THRESH, numItemsets);
 
     return freqCount;
 }

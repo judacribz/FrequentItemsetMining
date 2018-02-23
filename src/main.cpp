@@ -1,6 +1,3 @@
-// reading a text file
-#include <ctime>
-#include <iostream>
 #include "../headers/a_priori.h"
 #include "../headers/pcy.h"
 #include "../headers/util.h"
