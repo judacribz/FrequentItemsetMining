@@ -1,2 +1,4 @@
 *.exe
 *.out
+data/netflix.data
+.vscode
