@@ -1,3 +1,5 @@
 #pragma once
 
-extern void pcy();
+#include "../headers/util.h"
+
+extern void pcy(string file);

@@ -10,7 +10,7 @@ int main()
   clock_t start, end;
   clearScreen();
   start = clock();
-  aPriori();
+  aPriori(FILE_1, SUPP_THRESH);
   end = clock();
   cout << (end - start) / (double)(CLOCKS_PER_SEC) << " seconds" << endl;
 

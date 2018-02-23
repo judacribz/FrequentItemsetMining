@@ -20,6 +20,8 @@ extern map<int, int> itemCount;
 extern vector<int>::iterator i, j, k;
 extern vector<int> freqItems, basketItems;
 extern vector<vector<int>> freqArr;
+extern string filename;
+extern int threshold;
 
 extern void clearScreen();
 extern long getItemsetSize(long n, int dim);

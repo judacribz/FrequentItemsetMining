@@ -1,5 +1,4 @@
 #include "../headers/pcy.h"
-#include "../headers/util.h"
 
 using namespace std;
 
@@ -7,12 +6,12 @@ int passThroughPcy(int dim, int numItemsets);
 
 int pcy_hash(int item1, int item2, int num);
 
-void pcy()
+void pcy(string file)
 {
     int size;
     long numItemsets;
     int freqPairCount, freqTripCount;
-
+    filename = file;
     size = passThroughPcy(0, 1);
 }
 
@@ -20,7 +19,7 @@ int passThroughPcy(int dim, int numItemsets)
 {
     int freqCount = 0;
     // Read in file and get item frequency
-    ifstream ifs(FILE, ifstream::in);
+    ifstream ifs(filename, ifstream::in);
 
     if (ifs.good())
     {

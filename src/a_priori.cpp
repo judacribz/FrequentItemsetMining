@@ -1,13 +1,15 @@
 #include "../headers/a_priori.h"
-#include "../headers/util.h"
 
 inline int passThroughPriori(int dim, int numItemsets);
 
-void aPriori()
+void aPriori(string file, int thresh)
 {
     int size;
     long numItemsets;
     int freqPairCount, freqTripCount;
+    filename = file;
+
+    threshold = thresh;
 
     size = passThroughPriori(0, 1);
 
@@ -26,7 +28,7 @@ inline int passThroughPriori(int dim, int numItemsets)
 {
     int freqCount = 0;
     // Read in file and get item frequency
-    ifstream ifs(FILE, ifstream::in);
+    ifstream ifs(filename, ifstream::in);
 
     if (ifs.good())
     {
@@ -47,7 +49,7 @@ inline int passThroughPriori(int dim, int numItemsets)
                 {
                     (itemCount.count(*itemIt) > 0) ? itemCount[*itemIt]++ : itemCount[*itemIt] = 1;
 
-                    if (itemCount[*itemIt] == SUPP_THRESH)
+                    if (itemCount[*itemIt] == threshold)
                     {
                         freqCount++;
                         freqItems.push_back(*itemIt);
@@ -92,7 +94,7 @@ inline int passThroughPriori(int dim, int numItemsets)
         cout << "Unable to open file";
 
     if (dim != 0)
-        printItemsets(freqArr, dim, SUPP_THRESH, numItemsets);
+        printItemsets(freqArr, dim, threshold, numItemsets);
 
     return freqCount;
 }

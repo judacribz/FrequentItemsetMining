@@ -7,6 +7,8 @@ vector<int>::iterator i, j, k;
 vector<int> freqItems;
 vector<int> basketItems;
 vector<vector<int>> freqArr;
+string filename;
+int threshold;
 
 long getItemsetSize(long n, int dim)
 {
