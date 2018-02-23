@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#define SUPP_THRESH 800
+#define SUPP_THRESH 1000
 #define FILE "retail.dat"
 #define DIM_PAIRS 3
 #define DIM_TRIPS 4
@@ -121,7 +121,7 @@ int passThroughPriori(int dim, int numItemsets)
         {
             // Split items in string line and store in vector
             istringstream iss(line);
-            basketItems.assign(istream_iterator<int>{iss},
+            basketItems.assign((istream_iterator<int>)iss,
                                istream_iterator<int>());
             switch (dim)
             {

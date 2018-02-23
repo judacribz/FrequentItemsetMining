@@ -84,7 +84,7 @@ int passThroughPcy(int dim, int numItemsets)
         {
             // Split items in string line and store in vector
             istringstream iss(line);
-            basketItems.assign(istream_iterator<int>{iss},
+            basketItems.assign((istream_iterator<int>)iss,
                                istream_iterator<int>());
             switch (dim)
             {
