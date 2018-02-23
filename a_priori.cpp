@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#define SUPP_THRESH 800
+#define SUPP_THRESH 1000
 #define FILE "retail.dat"
 #define DIM_PAIRS 3
 #define DIM_TRIPS 4
