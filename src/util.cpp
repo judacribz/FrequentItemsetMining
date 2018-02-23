@@ -1,5 +1,5 @@
 #include <cstdlib>
-#include "util.h"
+#include "../headers/util.h"
 
 #ifdef _WIN32
 #define CLEAR "cls"

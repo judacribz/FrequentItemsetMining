@@ -1,8 +1,8 @@
 // reading a text file
 #include <ctime>
 #include <iostream>
-#include "a_priori.h"
-#include "util.h"
+#include "../headers/a_priori.h"
+#include "../headers/util.h"
 
 using namespace std;
 

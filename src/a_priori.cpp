@@ -5,8 +5,8 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "a_priori.h"
-#include "util.h"
+#include "../headers/a_priori.h"
+#include "../headers/util.h"
 
 using namespace std;
 
@@ -14,6 +14,8 @@ using namespace std;
 #define FILE "retail.dat"
 #define DIM_PAIRS 3
 #define DIM_TRIPS 4
+
+int passThroughPriori(int dim, int numItemsets);
 
 void aPriori()
 {
@@ -175,25 +177,21 @@ int passThroughPriori(int dim, int numItemsets)
     else
         cout << "Unable to open file";
 
-    if (dim == DIM_TRIPS)
-    {
-        for (int i = 0; i < numItemsets; i++)
-        {
-            if (freqArr[i][0] >= SUPP_THRESH)
-            {
-                cout << "Count(" << freqArr[i][1] << ", " << freqArr[i][2] << ", " << freqArr[i][3] << ")=" << freqArr[i][0] << endl;
-                freqCount++;
-            }
-        }
-    }
-    else if (dim == DIM_PAIRS)
+    if (dim > 0)
     {
         for (int i = 0; i < numItemsets; i++)
         {
             if (freqArr[i][0] >= SUPP_THRESH)
             {
                 freqCount++;
-                cout << "Count(" << freqArr[i][1] << ", " << freqArr[i][2] << ")=" << freqArr[i][0] << endl;
+                cout << "Count(";
+                for (int j = 1; j < dim; j++)
+                {
+                    cout << freqArr[i][j];
+
+                    cout << ((j < dim - 1) ? ", " : ")=");
+                }
+                cout << freqArr[i][0] << endl;
             }
         }
     }

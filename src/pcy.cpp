@@ -5,8 +5,8 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "pcy.h"
-#include "util.h"
+#include "../headers/pcy.h"
+#include "../headers/util.h"
 
 using namespace std;
 
@@ -14,6 +14,8 @@ using namespace std;
 #define FILE "retail.dat"
 #define DIM_PAIRS 3
 #define DIM_TRIPS 4
+
+int passThroughPcy(int dim, int numItemsets);
 
 int pcy_hash(int item1, int item2, int num = 3)
 {
