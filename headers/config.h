@@ -14,4 +14,4 @@
 #define DIM_TRIPS 4
 
 // pcy only
-#define BUCKET_NUM 20
+#define BUCKET_NUM 100
