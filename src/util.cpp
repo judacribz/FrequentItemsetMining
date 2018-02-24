@@ -2,11 +2,15 @@
 
 using namespace std;
 
-map<int, int> itemCount;
 vector<int>::iterator i, j, k;
 vector<int> freqItems;
 vector<int> basketItems;
+
+map<int, int> itemCount;
+
 vector<vector<int>> freqArr;
+vector<pair<int, int>> freqPairs; // only used byPCY
+
 string filename;
 int threshold;
 
@@ -26,6 +30,21 @@ long getItemsetSize(long n, int dim)
 void clearScreen()
 {
     system(CLEAR);
+}
+
+template <typename T>
+void clearMem(T &t)
+{
+    t.clear();
+}
+
+void clearMemory()
+{
+    clearMem(itemCount);
+    clearMem(freqItems);
+    clearMem(basketItems);
+    clearMem(freqArr);
+    clearMem(freqPairs);
 }
 
 int printItemsets(vector<vector<int>> &freqArr, int dim, int thresh, int numItemsets)

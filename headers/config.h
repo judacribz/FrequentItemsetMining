@@ -13,7 +13,7 @@
 #define DIM_PAIRS 3
 #define DIM_TRIPS 4
 
-#define SUPP_THRESH 800
+#define SUPP_THRESH 1000
 
 // pcy only
 #define BUCKET_NUM 50

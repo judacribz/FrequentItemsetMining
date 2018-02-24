@@ -8,7 +8,6 @@ inline bool findPair(int item1, int item2, vector<int> &pair);
 
 int arr[BUCKET_NUM];
 bitset<BUCKET_NUM> bitmap;
-vector<pair<int, int>> freqPairs;
 pair<int, int> pairObj;
 
 void pcy(string file, int thresh)
@@ -48,6 +47,8 @@ void pcy(string file, int thresh)
     // {
     //     cout << "(" << it->first << ", " << it->second << ")" << endl;
     // }
+
+    clearMemory();
 }
 
 inline int passThroughPcy(int dim, int numItemsets)

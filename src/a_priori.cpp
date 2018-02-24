@@ -21,6 +21,8 @@ void aPriori(string file, int thresh)
     // Populate 2D array with trips
     populateTuples(freqArr, freqItems, numItemsets, DIM_TRIPS);
     freqTripCount = passThroughPriori(DIM_TRIPS, numItemsets);
+
+    clearMemory();
 }
 
 inline int passThroughPriori(int dim, int numItemsets)
