@@ -1,5 +1,7 @@
 #pragma once
 
 #include "../headers/util.h"
-
-extern void pcy(string file);
+#include <bitset>
+#include <algorithm>
+#include <utility>
+extern void pcy(string file, int thresh);

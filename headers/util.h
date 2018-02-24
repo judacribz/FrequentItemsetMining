@@ -11,6 +11,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <string.h>
 
 #include "../headers/definitions.h"
 
@@ -26,4 +27,4 @@ extern int threshold;
 extern void clearScreen();
 extern long getItemsetSize(long n, int dim);
 extern int printItemsets(vector<vector<int>> &freqArr, int dim, int thresh, int numItemsets);
-extern void populateTuples(vector<vector<int>> &freqArr, int numItemsets, int dim);
+extern void populateTuples(vector<vector<int>> &freqArr, vector<int> &items, int numItemsets, int dim);

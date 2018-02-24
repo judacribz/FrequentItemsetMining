@@ -8,19 +8,18 @@ void aPriori(string file, int thresh)
     long numItemsets;
     int freqPairCount, freqTripCount;
     filename = file;
-
     threshold = thresh;
 
     size = passThroughPriori(0, 1);
 
     numItemsets = getItemsetSize(size, DIM_PAIRS - 1);
     // Populate 2D array with pairs
-    populateTuples(freqArr, numItemsets, DIM_PAIRS);
+    populateTuples(freqArr, freqItems, numItemsets, DIM_PAIRS);
     freqPairCount = passThroughPriori(DIM_PAIRS, numItemsets);
 
     numItemsets = getItemsetSize(size, DIM_TRIPS - 1);
     // Populate 2D array with trips
-    populateTuples(freqArr, numItemsets, DIM_TRIPS);
+    populateTuples(freqArr, freqItems, numItemsets, DIM_TRIPS);
     freqTripCount = passThroughPriori(DIM_TRIPS, numItemsets);
 }
 

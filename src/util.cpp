@@ -50,17 +50,17 @@ int printItemsets(vector<vector<int>> &freqArr, int dim, int thresh, int numItem
     return count;
 }
 
-void populateTuples(vector<vector<int>> &freqArr, int numItemsets, int dim)
+void populateTuples(vector<vector<int>> &freqArr, vector<int> &items, int numItemsets, int dim)
 {
     int l = 0;
 
     freqArr.resize(numItemsets);
-    for (int i = 0; i < numItemsets; ++i)
+    for (int i = 0; i < numItemsets; i++)
         freqArr[i].resize(dim);
 
-    for (i = freqItems.begin(); i != freqItems.end(); i++)
+    for (i = items.begin(); i != items.end(); i++)
     {
-        for (j = i + 1; j != freqItems.end(); j++)
+        for (j = i + 1; j != items.end(); j++)
         {
             switch (dim)
             {
