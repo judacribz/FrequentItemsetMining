@@ -23,8 +23,8 @@ extern const string CONT_POMPT;
 extern map<int, int> itemCount;
 extern vector<int>::iterator i, j, k;
 extern vector<int> freqItems, basketItems;
-extern vector<vector<int>> freqArr;
-extern vector<pair<int, int>> freqPairs; // only used byPCY
+extern vector<vector<int>> freqArr, freqPairs, freqTrips;
+extern vector<pair<int, int>> pcyPairs; // only used byPCY
 
 extern string filename;
 extern int threshold;
@@ -33,4 +33,5 @@ extern void clearScreen();
 extern void clearMemory();
 extern long getItemsetSize(long n, int dim);
 extern int printItemsets(vector<vector<int>> &freqArr, int dim, int thresh, int numItemsets);
+extern int printItemsets(vector<pair<int, int>> &freqArr);
 extern void populateTuples(vector<vector<int>> &freqArr, vector<int> &items, int numItemsets, int dim);

@@ -2,16 +2,15 @@
 
 using namespace std;
 
-const string CONT_POMPT = "\nPress any key to continue...";
+const string CONT_POMPT = "\nPress Enter to continue...";
 
 vector<int>::iterator i, j, k;
-vector<int> freqItems;
-vector<int> basketItems;
+vector<int> freqItems, basketItems;
 
 map<int, int> itemCount;
 
-vector<vector<int>> freqArr;
-vector<pair<int, int>> freqPairs; // only used byPCY
+vector<vector<int>> freqArr, freqPairs, freqTrips;
+vector<pair<int, int>> pcyPairs; // only used byPCY
 
 string filename;
 int threshold;
@@ -46,6 +45,8 @@ void clearMemory()
     clearMem(basketItems);
     clearMem(freqArr);
     clearMem(freqPairs);
+    clearMem(freqTrips);
+    clearMem(pcyPairs);
 }
 
 int printItemsets(vector<vector<int>> &freqArr, int dim, int thresh, int numItemsets)
@@ -65,6 +66,17 @@ int printItemsets(vector<vector<int>> &freqArr, int dim, int thresh, int numItem
             }
             cout << freqArr[i][0] << endl;
         }
+    }
+
+    return count;
+}
+
+int printItemsets(vector<pair<int, int>> &freqArr)
+{
+    int count = 0;
+    for (vector<pair<int, int>>::iterator it = freqArr.begin(); it != freqArr.end(); it++)
+    {
+        cout << "(" << it->first << ", " << it->second << ")" << endl;
     }
 
     return count;

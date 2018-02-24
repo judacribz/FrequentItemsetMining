@@ -1,4 +1,4 @@
-#include "../headers/a_priori.h"
+#include "../../headers/a_priori.h"
 
 inline int passThroughPriori(int dim, int numItemsets);
 
@@ -88,6 +88,10 @@ inline int passThroughPriori(int dim, int numItemsets)
                         if (count == dim - 1)
                         {
                             freqArr[i][0]++;
+                            if (freqArr[i][0] == threshold)
+                            {
+                                freqCount++;
+                            }
                             break;
                         }
                     }
@@ -101,8 +105,14 @@ inline int passThroughPriori(int dim, int numItemsets)
     else
         cout << "Unable to open file";
 
-    if (dim != 0)
-        freqCount = printItemsets(freqArr, dim, threshold, numItemsets);
+    if (dim == DIM_PAIRS)
+    {
+        freqPairs = freqArr;
+    }
+    else if (dim == DIM_TRIPS)
+    {
+        freqTrips = freqArr;
+    }
 
     return freqCount;
 }

@@ -5,7 +5,9 @@ MK_DIR = mkdir
 RM_DIR = rmdir
 TARGET = main
 BUILD_DIR = build/
-SOURCES = src/*.cpp
+SRC_DIR = src/
+ALG_DIR = $(SRC_DIR)algorithms/
+SOURCES = $(SRC_DIR)*.cpp $(ALG_DIR)*.cpp
 .PHONY: clean help
 
 

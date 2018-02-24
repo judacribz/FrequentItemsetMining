@@ -11,6 +11,9 @@ using namespace std;
 #define SUPP_PERCENT '2'
 #define EXIT_PROG 'x'
 
+const string PERCENT = "percent";
+const string THRESHOLD = "threshold";
+
 const string MAIN_PROMPT = "Frequent Itemset Mining Techniques:\n"
                            "\t1 - A-Priori\n"
                            "\t2 - Park-Chen-Yu\n\n"
@@ -23,13 +26,14 @@ const string THRESH_PROMPT = "Support Types:\n"
                              "\tx - Exit Program\n"
                              "\nEnter choice : ";
 
-const string PERCENT = "percent";
-const string THRESHOLD = "threshold";
-
 const string THRESH_VAL_PROMPT = "Enter support ";
 
-clock_t startTime,
-    endTime;
+const string PRINT_PROMPT = "Print pairs?\n"
+                            "\t1 - Yes\n"
+                            "\t2 - No\n\n"
+                            "\nEnter choice : ";
+
+clock_t startTime, endTime;
 
 inline void runAlg(long (*func)(string, int), string file, int thresh);
 
@@ -129,8 +133,42 @@ int main()
 
     runAlg(algFunc, FILE_1, support);
 
-    cout << CONT_POMPT;
-    getchar();
+    do
+    {
+      reEnter = false;
+      cout << PRINT_PROMPT;
+      int choice;
+      cin >> choice;
+      getchar();
+
+      switch (choice)
+      {
+      case 1:
+        if (algFunc == aPriori)
+        {
+          printItemsets(freqPairs, DIM_PAIRS, support, freqPairs.size());
+          printItemsets(freqTrips, DIM_TRIPS, support, freqTrips.size());
+        }
+        else
+        {
+          printItemsets(pcyPairs);
+        }
+        cout << CONT_POMPT;
+        getchar();
+        break;
+      case 2:
+        break;
+      default:
+        reEnter = true;
+        cout << "Invalid Entry: Please enter number associated with menu item above";
+        cout << CONT_POMPT;
+        getchar();
+        clearScreen();
+        break;
+      }
+
+    } while (reEnter);
+
     clearMemory();
 
   } while (true);
@@ -140,7 +178,6 @@ int main()
 
 inline void runAlg(long (*func)(string, int), string file, int thresh)
 {
-
   startTime = clock();
   long promptTime = func(file, thresh);
   endTime = clock();

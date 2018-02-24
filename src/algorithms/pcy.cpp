@@ -1,4 +1,4 @@
-#include "../headers/pcy.h"
+#include "../../headers/pcy.h"
 
 const string BUCKET_THRESH_PROMPT = "\nEnter support threshold for buckets: ";
 
@@ -7,19 +7,21 @@ inline int hashPcy(int item1, int item2, int bucketNum);
 inline bool findItems(int item1, int item2);
 inline bool findPair(int item1, int item2, vector<int> &pair);
 
-int arr[BUCKET_NUM];
+int bucketsArr[BUCKET_NUM];
 bitset<BUCKET_NUM> bitmap;
 pair<int, int> pairObj;
 
 long pcy(string file, int thresh)
 {
-    clock_t startTime, endTime;
+    clock_t startTime, endTime, pauseTime = 0;
     bool reEnter;
     int bucketThresh;
     long numItemsets;
     int freqPairCount, freqTripCount;
     filename = file;
     threshold = thresh;
+
+    memset(bucketsArr, 0, sizeof(bucketsArr));
 
     // 1st pass
     passThroughPcy(0, 1);
@@ -31,10 +33,11 @@ long pcy(string file, int thresh)
     long sum = 0;
     for (int i = 0; i < BUCKET_NUM; i++)
     {
-        cout << arr[i] << "\t";
-        sum += arr[i];
+        cout << bucketsArr[i] << "\t";
+        sum += bucketsArr[i];
     }
 
+    // Buckets thresh input (since not using percent yet)
     cout << "\nMean: " << (float)sum / (float)BUCKET_NUM << endl;
     startTime = clock();
     do
@@ -54,11 +57,13 @@ long pcy(string file, int thresh)
         }
     } while (reEnter);
     endTime = clock();
+    pauseTime += endTime - startTime;
 
+    //  Set the bit vector
     bitmap.set();
     for (int i = 0; i < BUCKET_NUM; i++)
     {
-        if (arr[i] < bucketThresh)
+        if (bucketsArr[i] < bucketThresh)
             bitmap.set(i, 0);
     }
 
@@ -68,7 +73,7 @@ long pcy(string file, int thresh)
     cout << "Bitmap: " << bitmap << endl;
     printf("Frequent Pairs: %d\n", freqPairCount);
 
-    return endTime - startTime;
+    return pauseTime;
 }
 
 inline int passThroughPcy(int dim, int numItemsets)
@@ -87,8 +92,6 @@ inline int passThroughPcy(int dim, int numItemsets)
             istringstream iss(line);
             basketItems.assign((istream_iterator<int>)iss,
                                istream_iterator<int>());
-
-            // memset(arr, 0, sizeof(arr));
 
             switch (dim)
             {
@@ -124,21 +127,21 @@ inline int passThroughPcy(int dim, int numItemsets)
                 {
                     for (int i = 0; i < numItemsets; i++)
                     {
-                        arr[hashPcy(freqArr[i][1], freqArr[i][2], BUCKET_NUM)]++;
+                        bucketsArr[hashPcy(freqArr[i][1], freqArr[i][2], BUCKET_NUM)]++;
                     }
                 }
                 else
                 {
                     for (int i = 0; i < numItemsets; i++)
                     {
-                        if (bitmap[hashPcy(freqArr[i][1], freqArr[i][2], BUCKET_NUM)] && findItems(freqArr[i][1], freqArr[i][2]))
+                        if (bitmap[hashPcy(freqArr[i][1], freqArr[i][2], BUCKET_NUM)] == 1 && findItems(freqArr[i][1], freqArr[i][2]))
                         {
 
                             pairObj = make_pair(freqArr[i][1], freqArr[i][2]);
-                            if (find(freqPairs.begin(), freqPairs.end(), pairObj) == freqPairs.end())
+                            if (find(pcyPairs.begin(), pcyPairs.end(), pairObj) == pcyPairs.end())
                             {
                                 freqCount++;
-                                freqPairs.push_back(pairObj);
+                                pcyPairs.push_back(pairObj);
                             }
                         }
                     }
@@ -152,9 +155,6 @@ inline int passThroughPcy(int dim, int numItemsets)
     }
     else
         cout << "Unable to open file";
-
-    // if (dim != 0)
-    //     printItemsets(freqArr, dim, threshold, numItemsets);
 
     return freqCount;
 }
