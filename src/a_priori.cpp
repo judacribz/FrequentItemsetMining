@@ -2,7 +2,7 @@
 
 inline int passThroughPriori(int dim, int numItemsets);
 
-void aPriori(string file, int thresh)
+long aPriori(string file, int thresh)
 {
     int size;
     long numItemsets;
@@ -10,19 +10,26 @@ void aPriori(string file, int thresh)
     filename = file;
     threshold = thresh;
 
+    // 1st pass
     size = passThroughPriori(0, 1);
 
-    numItemsets = getItemsetSize(size, DIM_PAIRS - 1);
     // Populate 2D array with pairs
+    numItemsets = getItemsetSize(size, DIM_PAIRS - 1);
     populateTuples(freqArr, freqItems, numItemsets, DIM_PAIRS);
+
+    // 2nd pass
     freqPairCount = passThroughPriori(DIM_PAIRS, numItemsets);
 
+    // Populate 2D array with triples
     numItemsets = getItemsetSize(size, DIM_TRIPS - 1);
-    // Populate 2D array with trips
     populateTuples(freqArr, freqItems, numItemsets, DIM_TRIPS);
+
+    // 3rd pass
     freqTripCount = passThroughPriori(DIM_TRIPS, numItemsets);
 
-    clearMemory();
+    printf("Frequent Pairs: %d\nFrequent Triples: %d\n", freqPairCount, freqTripCount);
+
+    return 0;
 }
 
 inline int passThroughPriori(int dim, int numItemsets)
@@ -61,7 +68,7 @@ inline int passThroughPriori(int dim, int numItemsets)
 
                 // Check if pair or triple exists in each basket, add to pair count in array
             default:
-                int count = 0;
+                int count;
 
                 // Get and store pair count
                 for (int i = 0; i < numItemsets; i++)
@@ -95,7 +102,7 @@ inline int passThroughPriori(int dim, int numItemsets)
         cout << "Unable to open file";
 
     if (dim != 0)
-        printItemsets(freqArr, dim, threshold, numItemsets);
+        freqCount = printItemsets(freqArr, dim, threshold, numItemsets);
 
     return freqCount;
 }

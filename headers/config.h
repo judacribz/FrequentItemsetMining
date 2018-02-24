@@ -13,9 +13,5 @@
 #define DIM_PAIRS 3
 #define DIM_TRIPS 4
 
-#define SUPP_THRESH 1000
-
 // pcy only
-#define BUCKET_NUM 50
-#define BASKET_NUM 33000
-#define PERCENT 0.75
+#define BUCKET_NUM 20

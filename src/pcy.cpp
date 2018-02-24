@@ -1,7 +1,8 @@
 #include "../headers/pcy.h"
 
-inline int passThroughPcy(int dim, int numItemsets);
+const string BUCKET_THRESH_PROMPT = "\nEnter support threshold for buckets: ";
 
+inline int passThroughPcy(int dim, int numItemsets);
 inline int hashPcy(int item1, int item2, int bucketNum);
 inline bool findItems(int item1, int item2);
 inline bool findPair(int item1, int item2, vector<int> &pair);
@@ -10,18 +11,23 @@ int arr[BUCKET_NUM];
 bitset<BUCKET_NUM> bitmap;
 pair<int, int> pairObj;
 
-void pcy(string file, int thresh)
+long pcy(string file, int thresh)
 {
-    int size;
+    clock_t startTime, endTime;
+    bool reEnter;
+    int bucketThresh;
     long numItemsets;
     int freqPairCount, freqTripCount;
     filename = file;
     threshold = thresh;
 
-    size = passThroughPcy(0, 1);
+    // 1st pass
+    passThroughPcy(0, 1);
 
+    // 2nd pass
     freqPairCount = passThroughPcy(DIM_PAIRS, numItemsets);
 
+    cout << "Buckets: " << endl;
     long sum = 0;
     for (int i = 0; i < BUCKET_NUM; i++)
     {
@@ -29,26 +35,40 @@ void pcy(string file, int thresh)
         sum += arr[i];
     }
 
-    thresh = ((((float)sum / (float)BUCKET_NUM) * 2) * PERCENT);
+    cout << "\nMean: " << (float)sum / (float)BUCKET_NUM << endl;
+    startTime = clock();
+    do
+    {
+        reEnter = false;
+        cout << BUCKET_THRESH_PROMPT;
+
+        scanf("%d", &bucketThresh);
+        getchar();
+        if (bucketThresh < 0)
+        {
+
+            reEnter = true;
+            cout << "Invalid Entry: Please enter a positive number";
+            cout << CONT_POMPT;
+            getchar();
+        }
+    } while (reEnter);
+    endTime = clock();
 
     bitmap.set();
     for (int i = 0; i < BUCKET_NUM; i++)
     {
-        if (arr[i] < BASKET_NUM)
+        if (arr[i] < bucketThresh)
             bitmap.set(i, 0);
     }
 
-    cout << thresh << endl;
-    cout << bitmap << endl;
-
+    // 3rd pass
     freqPairCount = passThroughPcy(DIM_TRIPS, numItemsets);
 
-    // for (vector<pair<int, int>>::iterator it = freqPairs.begin(); it != freqPairs.end(); it++)
-    // {
-    //     cout << "(" << it->first << ", " << it->second << ")" << endl;
-    // }
+    cout << "Bitmap: " << bitmap << endl;
+    printf("Frequent Pairs: %d\n", freqPairCount);
 
-    clearMemory();
+    return endTime - startTime;
 }
 
 inline int passThroughPcy(int dim, int numItemsets)
@@ -117,6 +137,7 @@ inline int passThroughPcy(int dim, int numItemsets)
                             pairObj = make_pair(freqArr[i][1], freqArr[i][2]);
                             if (find(freqPairs.begin(), freqPairs.end(), pairObj) == freqPairs.end())
                             {
+                                freqCount++;
                                 freqPairs.push_back(pairObj);
                             }
                         }

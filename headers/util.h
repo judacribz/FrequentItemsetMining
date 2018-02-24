@@ -1,21 +1,24 @@
 #pragma once
 
 #include <cstdlib>
-#include <iostream>
-#include <map>
-#include <vector>
 #include <ctime>
-#include <iostream>
 #include <fstream>
+#include <map>
+#include <iostream>
 #include <iterator>
 #include <sstream>
+#include <stdio.h>
 #include <string>
-#include <vector>
 #include <string.h>
+#include <termios.h>
+#include <unistd.h>
+#include <vector>
 
 #include "../headers/config.h"
 
 using namespace std;
+
+extern const string CONT_POMPT;
 
 extern map<int, int> itemCount;
 extern vector<int>::iterator i, j, k;

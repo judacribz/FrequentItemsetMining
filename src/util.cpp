@@ -2,6 +2,8 @@
 
 using namespace std;
 
+const string CONT_POMPT = "\nPress any key to continue...";
+
 vector<int>::iterator i, j, k;
 vector<int> freqItems;
 vector<int> basketItems;
@@ -23,7 +25,6 @@ long getItemsetSize(long n, int dim)
         div *= i - (n - dim);
     }
 
-    // cout << (size / div) << endl;
     return size / div;
 }
 

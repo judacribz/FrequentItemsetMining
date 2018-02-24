@@ -4,4 +4,4 @@
 #include <bitset>
 #include <algorithm>
 #include <utility>
-extern void pcy(string file, int thresh);
+extern long pcy(string file, int thresh);
