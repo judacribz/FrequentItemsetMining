@@ -25,14 +25,14 @@ long freqPairCount2;
 
 long getItemsetSize(long n, int dim)
 {
-    int size = 1, div = 1;
+    int size = 1, diviser = 1;
     for (int i = n; i > (n - dim); --i)
     {
         size *= i;
-        div *= i - (n - dim);
+        diviser *= i - (n - dim);
     }
 
-    return size / div;
+    return size / diviser;
 }
 
 void clearScreen()
