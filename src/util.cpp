@@ -10,10 +10,18 @@ vector<int> freqItems, basketItems;
 map<int, int> itemCount;
 
 vector<vector<int>> freqArr, freqPairs, freqTrips;
-vector<pair<int, int>> pcyPairs; // only used byPCY
+vector<pair<int, int>> hashPairs; // only used byPCY
 
 string filename;
 int threshold;
+
+int bucketsArr2[BUCKET_NUM2];
+int bucketsArr[BUCKET_NUM];
+bitset<BUCKET_NUM> bitmap1;
+bitset<BUCKET_NUM2> bitmap2;
+pair<int, int> pairObj;
+int bucketNum;
+long freqPairCount2;
 
 long getItemsetSize(long n, int dim)
 {
@@ -46,7 +54,7 @@ void clearMemory()
     clearMem(freqArr);
     clearMem(freqPairs);
     clearMem(freqTrips);
-    clearMem(pcyPairs);
+    clearMem(hashPairs);
 }
 
 int printItemsets(vector<vector<int>> &freqArr, int dim, int thresh, int numItemsets)
@@ -114,4 +122,21 @@ void populateTuples(vector<vector<int>> &freqArr, vector<int> &items, int numIte
             }
         }
     }
+}
+
+int hashFunc(int item1, int item2, int bucketNum)
+{
+    return (item1 ^ item2) % bucketNum;
+}
+
+bool findItems(int item1, int item2)
+{
+    return (find(freqItems.begin(), freqItems.end(), item1) != freqItems.end() &&
+            find(freqItems.begin(), freqItems.end(), item2) != freqItems.end());
+}
+
+bool findPair(int item1, int item2, vector<int> &pair)
+{
+    return (find(pair.begin(), pair.end(), item1) != pair.end() &&
+            find(pair.begin(), pair.end(), item2) != pair.end());
 }

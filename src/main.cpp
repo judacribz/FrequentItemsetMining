@@ -1,11 +1,13 @@
 #include "../headers/a_priori.h"
 #include "../headers/pcy.h"
+#include "../headers/multi_hash.h"
 #include "../headers/util.h"
 
 using namespace std;
 
 #define A_PRIORI '1'
 #define PCY '2'
+#define MULTI_HASH '3'
 
 #define SUPP_THRESHOLD '1'
 #define SUPP_PERCENT '2'
@@ -16,7 +18,8 @@ const string THRESHOLD = "threshold";
 
 const string MAIN_PROMPT = "Frequent Itemset Mining Techniques:\n"
                            "\t1 - A-Priori\n"
-                           "\t2 - Park-Chen-Yu\n\n"
+                           "\t2 - Park-Chen-Yu\n"
+                           "\t3 - Multi-Hash\n\n"
                            "\tx - Exit Program\n"
                            "\nEnter choice : ";
 
@@ -62,6 +65,9 @@ int main()
         break;
       case PCY:
         algFunc = pcy;
+        break;
+      case MULTI_HASH:
+        algFunc = multi_hash;
         break;
       case EXIT_PROG:
         exit(0);
@@ -151,7 +157,7 @@ int main()
         }
         else
         {
-          printItemsets(pcyPairs);
+          printItemsets(hashPairs);
         }
         cout << CONT_POMPT;
         getchar();
