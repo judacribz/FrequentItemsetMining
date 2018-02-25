@@ -9,8 +9,8 @@ long pcy(string file, int thresh)
     clock_t startTime, endTime, pauseTime = 0;
     bool reEnter;
     int bucketThresh;
-    long numItemsets;
-    int freqPairCount, freqTripCount;
+    long numItemsets = 0;
+    int freqPairCount;
     filename = file;
     threshold = thresh;
 
@@ -107,7 +107,6 @@ inline int passThroughPcy(int dim, int numItemsets)
 
                 // Check if pair or triple exists in each basket, add to pair count in array
             default:
-                int count;
 
                 numItemsets = getItemsetSize(basketItems.size(), DIM_PAIRS - 1);
 

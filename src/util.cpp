@@ -10,7 +10,7 @@ vector<int> freqItems, basketItems;
 map<int, int> itemCount;
 
 vector<vector<int>> freqArr, freqPairs, freqTrips;
-vector<pair<int, int>> hashPairs; // only used byPCY
+vector<pair<int, int>> hashPairs; // only used by PCY and MultiHash
 
 string filename;
 int threshold;
